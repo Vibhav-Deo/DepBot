@@ -38,7 +38,41 @@ console.log('In Process message');
 
 function scoreCalculation()
 {
-  if(data.queryResponse.includes((("Question 1") || ("Question 6") || ("Question 8") || ("Question 11") || ("Question 12") || ("Question 14") || ("Question 18")))
+  if(data.queryResponse.includes((("Question 1") || ("Question 6") || ("Question 8") || ("Question 11") || ("Question 12") || ("Question 14") || ("Question 18"))))
+  {
+    if(data.userQuery === 'Never')
+      stressScore = stressScore + 0;
+    else if(data.userQuery === 'Somtimes')
+      stressScore = stressScore + 1;
+    else if(data.userQuery === 'Often')
+      stressScore = stressScore + 2;
+    else
+      stressScore = stressScore + 3;
+  }
+  else if(data.queryResponse.includes((("Question 2") || ("Question 3") || ("Question 7") || ("Question 9") || ("Question 15") || ("Question 19") || ("Question 20"))))
+  {
+    if(data.userQuery === 'Never')
+      anxietyScore = anxietyScore + 0;
+    else if(data.userQuery === 'Somtimes')
+    anxietyScore = anxietyScore + 1;
+    else if(data.userQuery === 'Often')
+    anxietyScore = anxietyScore + 2;
+    else
+    anxietyScore = anxietyScore + 3;
+  }
+  else
+  {
+    if(data.userQuery === 'Never')
+      depressionScore = depressionScore + 0;
+    else if(data.userQuery === 'Somtimes')
+    depressionScore = depressionScore + 1;
+    else if(data.userQuery === 'Often')
+    depressionScore = depressionScore + 2;
+    else
+    depressionScore = depressionScore + 3;
+  }
+
+  console.log('Stress Score-:'+stressScore+' Anxiety score-:'+anxietyScore+' Depression Score-:'+depressionScore)
 }
 const sendTextMessage = (userId, queryResult) => {
   var generate_response = {
@@ -133,6 +167,7 @@ module.exports = (event) => {
       console.log('In dialogflow request');
       return sendTextMessage(userId, result);
     })
+    .then(scoreCalculation())
     .then(dbConnection.executioner(data))
     .catch(err => {
       console.error('ERROR:', err);
